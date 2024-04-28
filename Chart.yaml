@@ -1,0 +1,10 @@
+apiVersion: v2
+name: jenkins
+description: A Helm chart for Kubernetes 
+#sources:
+#    - https://github.apple.com
+maintainers: 
+  - name: Sireesha
+    email: Shireesha.ganjigunta@exlservice.com
+    
+version: '1.0'

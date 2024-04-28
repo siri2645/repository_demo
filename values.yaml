@@ -1,0 +1,52 @@
+serviceAccount:
+# Specifies whether a service account should be created
+  enabled: true
+  # Annotations to add to the service account
+    
+  name: aws-load-balancer-controller
+
+namespace: jenkins
+
+StorageClass:
+  enabled: true
+  name: efs-sc
+  provisioner: efs.csi.aws.com
+  provisioningMode: efs-ap
+  fileSystemId: fs-03e72134032a6cb73
+  uid: "0"
+  gid: "1000"
+  reclaimPolicy: Retain
+
+HorizontalPodAutoscaler:
+  enabled: true
+  maxReplicas: 3
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 70
+
+Ingress:
+  enabled: true
+  lables:
+    app: jenkins
+
+Jenkins_SA:
+  enabled: true
+  port: 80
+  targetPort: 8080
+  type: NodePort
+
+PersistentVolumeClaim:
+  enabled: true
+  stoageClassName: efs-sc
+  storage: 4Gi
+
+initContainers:
+  enabled: true
+  yamlData:
+    - name: delay
+      image: busybox
+      command: ["sh", "-c", "sleep 10"]
+      volumeMounts:
+      - name: jenkins-home
+        mountPath: /var/jenkins_home/
+
+containerPort: 8080

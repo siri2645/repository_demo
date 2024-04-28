@@ -1,0 +1,15 @@
+{{- $releaseName := include "Jenkins-K8s-Deployment.fullname" . -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "Jenkins-K8s-Deployment.fullname" . }} 
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app.kubernetes.io/instance: {{ $releaseName }}
+    app.kubernetes.io/managed-by: helm
+    app.kubernetes.io/name: {{ $releaseName }} 
+  ports:
+  - port: {{ .Values.Jenkins_SA.port }}
+    targetPort: {{ .Values.Jenkins_SA.targetPort }}
+  type: {{ .Values.Jenkins_SA.type }}

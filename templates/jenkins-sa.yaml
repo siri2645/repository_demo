@@ -1,0 +1,18 @@
+{{- $releaseName := include "Jenkins-K8s-Deployment.fullname" . -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "Jenkins-K8s-Deployment.fullname" . }}-sa
+  namespace: {{ .Values.namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: 
+  name: {{ include "Jenkins-K8s-Deployment.fullname" . }}-role
+  namepsace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/instance: {{ $releaseName }}
+    app.kubernetes.io/name: {{ $releaseName }} 
+    app.kubernetes.io/managed-by: helm
+rules:
+{{- include "jenkins-role.rules" . | nindent 4 -}}

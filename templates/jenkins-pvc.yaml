@@ -1,0 +1,16 @@
+{{- if .Values.PersistentVolumeClaim.enabled -}}
+{{- $releaseName := include "Jenkins-K8s-Deployment.fullname" . -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $releaseName }}-pvc
+  namespace: {{ .Values.namespace }}
+spec:
+  resources:
+    requests:
+      storage: {{ .Values.PersistentVolumeClaim.storage }}
+  volumeMode: Filesystem
+  storageClassName: {{ .Values.PersistentVolumeClaim.stoageClassName }}
+  accessModes:
+    - ReadWriteMany
+{{- end -}}
